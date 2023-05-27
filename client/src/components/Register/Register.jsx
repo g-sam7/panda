@@ -31,11 +31,11 @@ const Register = ({ onRouteChange }) => {
         <div className="mx-auto w-full max-w-sm lg:w-96">
           <div className="flex items-center justify-center space-x-2 py-8">
             <img
-              className="h-12 w-auto"
-              src="/chatdeck.png"
-              alt="Chat Deck"
+              className="h-12 w-auto rounded-sm"
+              src="/panda.jpg"
+              alt="Panda"
             />
-            <h2 className="text-4xl font-bold tracking-tight text-gray-900 font-mono">ChatDeck</h2>
+            <h2 className="text-4xl font-bold tracking-tight text-gray-900 font-mono">Panda</h2>
           </div>
           <h2 className="mt-6 text-3xl font-bold tracking-tight text-gray-900">Register your account</h2>
 
@@ -128,8 +128,8 @@ const Register = ({ onRouteChange }) => {
       </div>
       <div className="relative hidden w-0 flex-1 lg:block">
         <img
-          className="absolute inset-0 h-full w-full object-cover"
-          src="https://images.unsplash.com/photo-1569389397653-c04fe624e663?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80"
+          className="absolute inset-0 h-full w-full object-cover rounded-lg"
+          src="/big-panda.jpg"
           alt=""
         />
       </div>

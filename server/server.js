@@ -28,5 +28,5 @@ app.post('/register', (req, res) => {
 })
 
 app.listen(port, () => {
-  console.log(`Chat deck server listening on port ${port}`)
+  console.log(`Panda server listening on port ${port}`)
 });
