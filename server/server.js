@@ -12,8 +12,8 @@ app.use(express.json());
 
 app.post('/signin', (req, res) => {
   const { email, password } = req.body;
-  console.log('email', email) 
-  console.log('password', password)
+  console.log('email:', email) 
+  console.log('password:', password)
   // match credentials from what is in the request to what is in db
   // return user is credentials match
   res.json('successfully signed in') 
