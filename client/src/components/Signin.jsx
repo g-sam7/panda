@@ -1,11 +1,16 @@
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
-const Signin = ({ onRouteChange }) => {
+const Signin = ({
+  loadUser,
+  setIsSignedIn,
+}) => {
   const [signInEmail, setSignInEmail] = useState('');
   const [signInPassword, setSignInPassword] = useState('');
+  const navigate = useNavigate();
 
   const onSubmitSignIn = () => {
-    fetch('https://localhost:3000/signin', {
+    fetch('http://localhost:3000/signin', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -17,7 +22,11 @@ const Signin = ({ onRouteChange }) => {
     .then(user => {
       if (user.id) {
         loadUser(user);
-        onRouteChange('home');
+        setIsSignedIn(true);
+        navigate('/home');
+      } else {
+        // TODO: Better error handling
+        alert('Incorrect email or password. Please try again.');
       }
     })
     .catch(err => console.log('Error: ', err))
@@ -36,8 +45,8 @@ const Signin = ({ onRouteChange }) => {
         <h2 className="mt-6 text-3xl font-bold tracking-tight text-gray-900">Login to Panda </h2>
 
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-          <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-            <form className="space-y-6" action="#" method="POST">
+          <div className="bg-white py-8 px-4 shadow rounded-lg sm:px-10">
+            <div className="space-y-6">
               <div>
                 <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                   Email address
@@ -72,27 +81,6 @@ const Signin = ({ onRouteChange }) => {
                 </div>
               </div>
 
-              {/* TODO: Would like to implement password reset functionality */}
-              {/* <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <input
-                    id="remember-me"
-                    name="remember-me"
-                    type="checkbox"
-                    className="h-4 w-4 rounded border-gray-300 text-sky-600 focus:ring-sky-600"
-                  />
-                  <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-                    Remember me
-                  </label>
-                </div>
-
-                <div className="text-sm">
-                  <a href="#" className="font-medium text-sky-600 hover:text-sky-500">
-                    Forgot your password?
-                  </a>
-                </div>
-              </div> */}
-
               <div>
                 <button
                   type="submit"
@@ -102,10 +90,10 @@ const Signin = ({ onRouteChange }) => {
                   Sign in
                 </button>
               </div>
-            </form>
+            </div>
 
             <div className="mt-6">
-              <button type="button" onClick={() => onRouteChange("register")} className="text-sm text-sky-600 hover:text-sky-500 cursor-pointer underline">
+              <button type="button" onClick={() => navigate('/register')} className="text-sm text-sky-600 hover:text-sky-500 cursor-pointer underline">
                 Or, register your account
               </button>
             </div>

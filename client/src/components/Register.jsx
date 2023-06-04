@@ -1,16 +1,22 @@
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
-const Register = ({ onRouteChange }) => {
+const Register = ({
+  loadUser,
+  setIsSignedIn,
+ }) => {
   const [registerName, setRegisterName] = useState('');
   const [registerEmail, setRegisterEmail] = useState('');
   const [registerPassword, setRegisterPassword] = useState('');
+  const navigate = useNavigate();
+
 
   const onSubmitRegister = () => {
-    fetch('https://localhost:3000/register', {
+    fetch('http://localhost:3000/register', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
-        name: registerName,
+        username: registerName,
         email: registerEmail,
         password: registerPassword
       })
@@ -19,7 +25,11 @@ const Register = ({ onRouteChange }) => {
     .then(user => {
       if (user.id) {
         loadUser(user);
-        onRouteChange('home');
+        setIsSignedIn(true);
+        navigate('/home');
+      } else {
+        // TODO: Better error handling
+        alert('Unable to register. Please refresh and try again.');
       }
     })
     .catch(err => console.log('Error: ', err))
@@ -37,20 +47,20 @@ const Register = ({ onRouteChange }) => {
             />
             <h2 className="text-4xl font-bold tracking-tight text-gray-900 font-mono">Panda</h2>
           </div>
+          <span className="tracking-tight text-gray-900 font-mono italic text-sm">We're not bamboozling you, it's real-time chat at its bear best.</span>
           <h2 className="mt-6 text-3xl font-bold tracking-tight text-gray-900">Register your account</h2>
 
           <div className="mt-8">
-            <div className="mt-6">
-              <form action="#" method="POST" className="space-y-6">
-              
+            <div className="mt-6 bg-white py-8 px-4 shadow rounded-lg sm:px-10">
+              <div className="space-y-6">
                 <div className="space-y-1">
-                  <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
-                    Name
+                  <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
+                    Username
                   </label>
                   <div className="mt-2">
                     <input
-                      id="name"
-                      name="name"
+                      id="username"
+                      name="username"
                       type="text"
                       required
                       onChange={(e) => setRegisterName(e.target.value)}
@@ -92,21 +102,6 @@ const Register = ({ onRouteChange }) => {
                   </div>
                 </div>
 
-                {/* TODO: Add remember me functionality */}
-                {/* <div className="flex items-center justify-between">
-                  <div className="flex items-center">
-                    <input
-                      id="remember-me"
-                      name="remember-me"
-                      type="checkbox"
-                      className="h-4 w-4 rounded border-gray-300 text-sky-600 focus:ring-sky-600"
-                    />
-                    <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-                      Remember me
-                    </label>
-                  </div>
-                </div> */}
-
                 <div className="space-y-4 pt-6">
                   <button
                     type="submit"
@@ -116,12 +111,12 @@ const Register = ({ onRouteChange }) => {
                     Sign up
                   </button>
                   <div>
-                    <button type="button" onClick={() => onRouteChange("signin")} className="text-sm text-sky-600 hover:text-sky-500 cursor-pointer underline">
+                    <button type="button" onClick={() => navigate('/signin')} className="text-sm text-sky-600 hover:text-sky-500 cursor-pointer underline">
                       Or, login to your account
                     </button>
                   </div>
                 </div>
-              </form>
+              </div>
             </div>
           </div>
         </div>
