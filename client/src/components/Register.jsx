@@ -15,6 +15,7 @@ const Register = ({
     fetch('http://localhost:3000/register', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
+      credentials: 'include',
       body: JSON.stringify({
         username: registerName,
         email: registerEmail,

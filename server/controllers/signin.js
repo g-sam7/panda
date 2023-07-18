@@ -12,7 +12,7 @@ const signin = (client) => async (req, res) => {
 
     // If no user found, return an error
     if (userQueryResult.rowCount === 0) {
-      return res.status(404).json({ error: 'User not found' });
+      return res.status(401).json({ error: 'Unauthorized' });
     }
 
     const user = userQueryResult.rows[0];
@@ -22,11 +22,14 @@ const signin = (client) => async (req, res) => {
 
     // If passwords do not match, return an error
     if (!match) {
-      return res.status(401).json({ error: 'Invalid credentials' });
+      return res.status(401).json({ error: 'Unauthorized' });
     }
 
     // Remove password field from user
     delete user.password;
+
+    // Save the user's ID in the session
+    req.session.userId = user.id;
 
     // If everything is okay, return the user
     return res.status(200).json(user);

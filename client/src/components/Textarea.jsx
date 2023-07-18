@@ -6,7 +6,6 @@ import {
 const Textarea = ({ user }) => {
   const [selected, setSelected] = useState()
   const { email } = user;
-  console.log('data', user.username);
   return (
     <div className="flex items-center space-x-4">
       <div className="flex-shrink-0">
