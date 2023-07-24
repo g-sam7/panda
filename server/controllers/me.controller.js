@@ -1,4 +1,4 @@
-const me = (client) => async (req, res) => {
+const meController = (client) => async (req, res) => {
   if (!req.session.userId) {
     return res.status(401).json({ error: 'Not signed in' });
   }
@@ -31,4 +31,4 @@ const me = (client) => async (req, res) => {
   }
 }
 
-module.exports = { me };
+module.exports = { meController };

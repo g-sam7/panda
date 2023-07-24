@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 
-const signin = (client) => async (req, res) => {
+const signinController = (client) => async (req, res) => {
   const { email, password } = req.body;
 
   // SQL command to find a user with the provided email
@@ -40,4 +40,4 @@ const signin = (client) => async (req, res) => {
   }
 };
 
-module.exports = { signin };
+module.exports = { signinController };

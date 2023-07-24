@@ -1,6 +1,6 @@
 const { hashPassword } = require('../helpers/hashPassword');
 
-const register = (client) => async (req, res) => {
+const registerController = (client) => async (req, res) => {
   const { username, email, password } = req.body;
   try {
     const hashedPass = await hashPassword(password);
@@ -25,4 +25,4 @@ const register = (client) => async (req, res) => {
 }
 
 
-module.exports = { register };
+module.exports = { registerController };

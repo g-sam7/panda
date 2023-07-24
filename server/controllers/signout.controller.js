@@ -1,6 +1,5 @@
-const signout = (req, res) => {
+const signoutController = (req, res) => {
   // Destroy the session
-  console.log('sign out', req.session);
   req.session.destroy((err) => {
     if (err) {
       return res.status(500).json({ error: 'An error occurred while signing out' });
@@ -11,4 +10,4 @@ const signout = (req, res) => {
   });
 };
 
-module.exports = { signout };
+module.exports = { signoutController };

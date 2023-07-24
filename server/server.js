@@ -1,9 +1,5 @@
 const express = require('express');
 const app = express();
-const { register } = require('./controllers/register');
-const { signin } = require('./controllers/signin');
-const { signout } = require('./controllers/signout');
-const { me } = require('./controllers/me');
 const cors = require('cors');
 const session = require('express-session');
 require ('dotenv').config();
@@ -25,6 +21,11 @@ const client = new Pool({
 
 const port = process.env.PORT || 3000;
 
+const registerRouter = require('./routers/register.router')(client);
+const meRouter = require('./routers/me.router')(client);
+const signinRouter = require('./routers/signin.router')(client);
+const signoutRouter = require('./routers/signout.router')();
+
 app.use(session({
   store: new (require('connect-pg-simple')(session))({
     pool: client,
@@ -42,13 +43,12 @@ app.use(cors({
 }));
 
 app.use(express.urlencoded({extended: false}));
-
 app.use(express.json());
 
-app.get('/me', me(client));
-app.post('/register', register(client));
-app.post('/signin', signin(client));
-app.post('/signout', signout);
+app.use('/register', registerRouter);
+app.use('/me', meRouter);
+app.use('/signin', signinRouter);
+app.use('/signout', signoutRouter);
 
 app.listen(port, () => {
   console.log(`Panda server listening on port ${port}`)
