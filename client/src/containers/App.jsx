@@ -44,7 +44,7 @@ function App() {
   const loadUser = (data) => {
     setUser({
       id: data.id,
-      name: data.name,
+      username: data.username,
       email: data.email,
     });
   };

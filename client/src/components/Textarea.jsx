@@ -1,28 +1,17 @@
 import { useState } from 'react'
-import {
-  PaperClipIcon,
-} from '@heroicons/react/20/solid'
 
-const Textarea = ({ user }) => {
+const Textarea = () => {
   const [selected, setSelected] = useState()
-  const { email } = user;
   return (
-    <div className="flex items-center space-x-4">
-      <div className="flex-shrink-0">
-        <div className="h-10 w-10 rounded-full bg-gray-400 flex items-center justify-center">
-          <span className="text-white text-lg font-semibold">
-            {email?.substring(0, 2).toUpperCase()}
-          </span>
-        </div>
-      </div>
+    <div className="flex items-center space-x-4 lg:pr-72">
       <div className="min-w-0 flex-1">
         <form action="#" className="relative">
           <div className="overflow-hidden rounded-lg shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-indigo-600 bg-white">
             <textarea
-              rows={2}
-              name="comment"
-              id="comment"
-              className="block w-full resize-none border-0 bg-transparent py-1.5 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+              rows={3}
+              name="message"
+              id="message"
+              className="block w-full resize-none border-0 bg-transparent py-1.5 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-md sm:leading-6"
               placeholder="Say something..."
               defaultValue={''}
             />

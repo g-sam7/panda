@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom"
 
-const SignOut = ({ setIsSignedIn }) => {
+const SignOut = ({ setIsSignedIn, className }) => {
   const navigate = useNavigate();
   const handleSignOut = () => {
     fetch('http://localhost:3000/signout', {
@@ -22,12 +22,12 @@ const SignOut = ({ setIsSignedIn }) => {
   return (
     <button
       type="button"
-      className="underline cursor-pointer text-sm"
+      className={className}
       onClick={() => {
         handleSignOut();
       }}
     >
-      Sign out
+      Sign Out
     </button>
   )
 }
