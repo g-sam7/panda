@@ -1,9 +1,9 @@
 const express = require('express');
-const app = express();
 const cors = require('cors');
 const session = require('express-session');
-require ('dotenv').config();
-const { Pool }  = require ('pg');
+require('dotenv').config();
+const { Pool } = require('pg');
+const path = require('path');
 
 const {
   POSTGRES_HOST,
@@ -19,12 +19,12 @@ const client = new Pool({
     password: POSTGRES_PASSWORD
 });
 
-const port = process.env.PORT || 3000;
+const registerRouter = require('./routers/register/register.router')(client);
+const meRouter = require('./routers/me/me.router')(client);
+const signinRouter = require('./routers/signin/signin.router')(client);
+const signoutRouter = require('./routers/signout/signout.router')();
 
-const registerRouter = require('./routers/register.router')(client);
-const meRouter = require('./routers/me.router')(client);
-const signinRouter = require('./routers/signin.router')(client);
-const signoutRouter = require('./routers/signout.router')();
+const app = express();
 
 app.use(session({
   store: new (require('connect-pg-simple')(session))({
@@ -45,11 +45,12 @@ app.use(cors({
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
+});
 app.use('/register', registerRouter);
 app.use('/me', meRouter);
 app.use('/signin', signinRouter);
 app.use('/signout', signoutRouter);
 
-app.listen(port, () => {
-  console.log(`Panda server listening on port ${port}`)
-});
+module.exports = app;

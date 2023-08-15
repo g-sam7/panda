@@ -1,4 +1,4 @@
-const { hashPassword } = require('../helpers/hashPassword');
+const { hashPassword } = require('../../helpers/hashPassword');
 
 const registerController = (client) => async (req, res) => {
   const { username, email, password } = req.body;

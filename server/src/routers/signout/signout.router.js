@@ -1,7 +1,7 @@
 const express = require('express');
 
 const signoutRouter = express.Router();
-const { signoutController } = require('../controllers/signout.controller');
+const { signoutController } = require('./signout.controller');
 
 module.exports = () => {
   signoutRouter.post('/', signoutController);
