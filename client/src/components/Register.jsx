@@ -10,8 +10,42 @@ const Register = ({
   const [registerPassword, setRegisterPassword] = useState('');
   const navigate = useNavigate();
 
+  const validateEmail = (email) => {
+    // eslint-disable-next-line no-useless-escape
+    const re = /\S+@\S+\.\S+/;
+    return re.test(email);
+  }
+
+  const validatePassword = (password) => {
+    // eslint-disable-next-line no-useless-escape
+    const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+    return re.test(password);
+  }
+
+  const validateUsername = (username) => {
+    // eslint-disable-next-line no-useless-escape
+    const re = /^[a-zA-Z0-9]+$/;
+    return re.test(username);
+  }
+
 
   const onSubmitRegister = () => {
+    if (!registerName || !registerEmail || !registerPassword) {
+      alert('Please fill out all fields.');
+      return;
+    }
+    if (!validateEmail(registerEmail)) {
+      alert('Please enter a valid email address.');
+      return;
+    }
+    if (!validatePassword(registerPassword)) {
+      alert('Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number.');
+      return;
+    }
+    if (!validateUsername(registerName)) {
+      alert('Username must contain only letters and numbers.');
+      return;
+    }
     fetch('http://localhost:3000/register', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
