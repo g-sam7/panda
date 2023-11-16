@@ -31,7 +31,7 @@ const Home = ({ user, setIsSignedIn }) => {
 
   return (
     <>
-      <div className="fixed inset-0">
+      <div className="fixed inset-0 h-screen w-full overflow-scroll">
         <Sidebar
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
@@ -46,7 +46,9 @@ const Home = ({ user, setIsSignedIn }) => {
             setSidebarOpen={setSidebarOpen}
           />
           <main className="py-10">
-            <ChatRoom user={user} />
+            <ChatRoom
+              signedInUser={user}
+            />
           </main>
         </div>
       </div>

@@ -19,9 +19,10 @@ io.on('connection', (socket) => {
     connectedUsers[socket.id] = user;
   });
 
-	socket.on('chat message', (msg) => {
-		io.emit('chat message', { user: connectedUsers[socket.id], message: msg });
-	});
+	socket.on('message', (data) => {
+    console.log('Message received:', data);
+    io.emit('message', data);
+  });
 
 	socket.on('disconnect', () => {
 		delete connectedUsers[socket.id];

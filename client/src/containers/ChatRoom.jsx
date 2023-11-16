@@ -1,54 +1,73 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { io } from "socket.io-client";
-import classNames from 'classnames';
 
 import ChatInput from "../components/ChatInput";
 import ChatBubble from '../components/ChatBubble';
 
-const ChatRoom = ({ user }) => {
-  const socket = io('http://localhost:3000');
-  const [messages, setMessages] = useState([]);
-  const [message, setMessage] = useState('');
-  const [isMe, setIsMe] = useState(false);
+const useChatScroll = (messages) => {
+  const messagesEndRef = useRef(null);
+
   useEffect(() => {
-    socket.emit('user-connected', user);
-    socket.on('chat message', (msg) => {
-      setMessages((prevMessages) => [...prevMessages, msg]);
-      if (msg.user.id === user.id) {
-        setIsMe(true);
-      }
+    messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
+  return messagesEndRef;
+};
+
+const ChatRoom = ({ signedInUser }) => {
+  const socket = io('http://localhost:3000');
+  const [message, setMessage] = useState('');
+  const [messages, setMessages] = useState([]);
+  const messagesEndRef = useChatScroll(messages);
+
+  const scrollToBottom = () => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+    socket.emit('user-connected', signedInUser);
+    socket.on('message', (newMessage) => {
+      setMessages((previousMessages) => [...previousMessages, newMessage]);
     });
+    socket.on('disconnect', () => {
+      console.log('User has disconnected from server');
+    });
+
     return () => {
       socket.disconnect();
     };
-  }, [user]);
+  }, [signedInUser]);
 
   const sendMessage = () => {
-    socket.emit('chat message', { user, message });
+    const messageObject = { user: signedInUser, message: message };
+    socket.emit('message', messageObject);
     setMessage('');
   };
 
   return (
-    <>
-      <div>
-        <ul className={classNames('flex flex-col', {
-          'items-end': isMe,
-          'items-start': !isMe,
-        })}>
-          {console.log('messages', messages)}
-          {messages.map((msg, index) => (
-            <ChatBubble key={index} message={msg} currentUser={isMe} />
+    <div>
+      <div className="mb-8">
+        <ul className="flex flex-col items-end">
+          {messages.map((message, index) => (
+            <ChatBubble
+              key={index}
+              content={message}
+            />
           ))}
         </ul>
+        <div ref={messagesEndRef} />
       </div>
-      <div className="fixed bottom-0 right-0 left-0 lg:pl-72 pr-4">
+      <div className="fixed bottom-0 right-0 left-0 lg:pl-72 pr-4 border-t border-gray-200 w-full bg-gray-500">
         <ChatInput
           message={message}
           handleChange={(e) => setMessage(e.target.value)}
           handleSendMessage={sendMessage}
         />
       </div>
-    </>
+    </div>
   )
 }
 
