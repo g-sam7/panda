@@ -37,11 +37,12 @@ const ChatRoom = ({ signedInUser }) => {
   return (
     <div>
       <div className="mb-8">
-        <ul className="flex flex-col items-end">
+        <ul>
           {messages.map((message, index) => (
             <ChatBubble
               key={index}
               content={message}
+              isCurrentUser={message.user.id === signedInUser.id}
             />
           ))}
         </ul>

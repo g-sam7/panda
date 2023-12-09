@@ -1,17 +1,19 @@
 import React from 'react';
-// import classNames from 'classnames';
+import { useChatBubbleStyles } from '../hooks/useChatBubbleStyles';
 
-const ChatBubble = ({ content }) => {
+const ChatBubble = ({ content, isCurrentUser }) => {
   const { user, message } = content;
+  const styles = useChatBubbleStyles(isCurrentUser);
+
   return (
-    <li
-      className="w-fit rounded-lg px-4 py-2 text-sm font-semibold shadow-sm my-1 mx-4 bg-red-300"
-    >
-      <div>
-        <span className="text-gray-800 font-bold">{user.username}: </span>
-        <span className="text-white">{message}</span>
-      </div>
-    </li>
+    <div className={styles.container}>
+      <li className={styles.bubble}>
+        <div>
+          <span>{user.username?.substring(0, 2).toUpperCase()}: </span>
+          <span className={styles.message}>{message}</span>
+        </div>
+      </li>
+    </div>
   );
 };
 
