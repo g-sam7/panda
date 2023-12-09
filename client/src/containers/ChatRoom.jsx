@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { io } from "socket.io-client";
 
+import useSocket from '../hooks/useSocket';
 import ChatInput from "../components/ChatInput";
 import ChatBubble from '../components/ChatBubble';
 
@@ -15,10 +15,14 @@ const useChatScroll = (messages) => {
 };
 
 const ChatRoom = ({ signedInUser }) => {
-  const socket = io('http://localhost:3000');
   const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState([]);
+  const { messages, sendMessage } = useSocket(signedInUser);
   const messagesEndRef = useChatScroll(messages);
+
+  const handleSendMessage = () => {
+    sendMessage(message);
+    setMessage('');
+  };
 
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
@@ -28,25 +32,8 @@ const ChatRoom = ({ signedInUser }) => {
 
   useEffect(() => {
     scrollToBottom();
-    socket.emit('user-connected', signedInUser);
-    socket.on('message', (newMessage) => {
-      setMessages((previousMessages) => [...previousMessages, newMessage]);
-    });
-    socket.on('disconnect', () => {
-      console.log('User has disconnected from server');
-    });
-
-    return () => {
-      socket.disconnect();
-    };
-  }, [signedInUser]);
-
-  const sendMessage = () => {
-    const messageObject = { user: signedInUser, message: message };
-    socket.emit('message', messageObject);
-    setMessage('');
-  };
-
+  }, [messages]);
+  
   return (
     <div>
       <div className="mb-8">
@@ -64,7 +51,7 @@ const ChatRoom = ({ signedInUser }) => {
         <ChatInput
           message={message}
           handleChange={(e) => setMessage(e.target.value)}
-          handleSendMessage={sendMessage}
+          handleSendMessage={handleSendMessage}
         />
       </div>
     </div>
