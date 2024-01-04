@@ -20,10 +20,7 @@ const userIcon = (email) => {
 const Home = ({ user, setIsSignedIn }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const { email, username } = user;
-
-  const navigation = [
-    { name: 'John Doe', href: '#', icon: userIcon, current: false },
-  ]
+  
   const userNavigation = [
     { key: 1, component: <div>Your Profile</div> },
     { key: 2, component: <SignOut setIsSignedIn={setIsSignedIn}/> },
@@ -35,7 +32,6 @@ const Home = ({ user, setIsSignedIn }) => {
         <Sidebar
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
-          navigation={navigation}
         />
         <div className="lg:pl-72">
           <SearchBar
